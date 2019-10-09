@@ -1,28 +1,27 @@
-104405011 �s�q�| �d�f��
 
-�@�B�U��{�����D�n�γ~
-pdoInc.php:�s����Ʈw
-login.php:�n�J����
-logout.php:�n�X�b��
-register.php:���U�s�b��
-revise.php:�ק�b����ơ]�i�ק�ʺ٩M�K�X�^
-board.php:�C�X�U�ӬݪO
-index.php:�C�X�U�ӬݪO�U���峹
-viewBoard.php:�C�X�峹���e�M���U���^��
-newArticle.php:�s�W�ݪO�����峹
-newmsg.php:�s�W�峹�����^��
+一、各支程式的主要用途
+pdoInc.php:連接資料庫
+login.php:登入頁面
+logout.php:登出帳號
+register.php:註冊新帳號
+revise.php:修改帳號資料（可修改暱稱和密碼）
+board.php:列出各個看板
+index.php:列出各個看板下的文章
+viewBoard.php:列出文章內容和底下的回應
+newArticle.php:新增看板內的文章
+newmsg.php:新增文章內的回應
 
-�G�B�������[���\��
-�޲z���i�H�R���D�D�M��@�^��
-�޲z���i�ʺA�}�O
+二、有做的加分功能
+管理員可以刪除主題和單一回應
+管理員可動態開板
 
-�T�B �p���קK�ۦP���b�����U(�A�i�H���]���|���h�H�X�G�P�ɵ��U) 
-�b�ϥΪ̵��U�b���ɡA��select�y�y�d�ߦb��Ʈw���O�_�w�g���@�˪��b���A�p�GrowCount() == 1�A�N���w�g���ۦP���b���s�b�A�K�|���X���~�T���C
+三、 如何避免相同的帳號註冊(你可以假設不會有多人幾乎同時註冊) 
+在使用者註冊帳號時，用select語句查詢在資料庫中是否已經有一樣的帳號，如果rowCount() == 1，代表已經有相同的帳號存在，便會跳出錯誤訊息。
 
-�|�B �p���קK���n�J���o��
-�ϥ�isset($_SESSION['account'])�d�ݨϥΪ̬O�_�w�g�n�J�A�Y�|���n�J�K����ܷs�W�峹������C���~�A�bnewArticle.php�Bnewmsg.php���{�����]��J�H�U�{�����ˬd�A�Y���n�J�h�ഫ�ܵn�J�����C
+四、 如何避免未登入的發表
+使用isset($_SESSION['account'])查看使用者是否已經登入，若尚未登入便不顯示新增文章的按鍵。此外，在newArticle.php、newmsg.php兩支程式內也放入以下程式來檢查，若未登入則轉換至登入頁面。
 if(!isset($_SESSION['account'])){
 	die("<meta http-equiv=REFRESH CONTENT=0;url=login.php>");
 }
-���B �R���\��p�󱱺��v��
-�b�s��b����ƪ���ƪ����s�Wadmin�����A�Y���޲z��admin=1�A�Y���@��ϥΪ�admin=0�C�b�{�����ϥ�if($_SESSION['admin'] == 1)�ӧP�_�O�_���޲z�������A�Y���޲z�������~��R���峹�P�^���C
+五、 刪除功能如何控管權限
+在存放帳號資料的資料表中新增admin的欄位，若為管理員admin=1，若為一般使用者admin=0。在程式內使用if($_SESSION['admin'] == 1)來判斷是否為管理員身份，若為管理員身份才能刪除文章與回應。
